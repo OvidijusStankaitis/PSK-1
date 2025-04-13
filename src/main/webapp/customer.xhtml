@@ -1,29 +1,17 @@
-<ui:composition template="template.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="template.xhtml">
+    <ui:define name="title">Customers</ui:define>
+
     <ui:define name="content">
         <h2>Customers</h2>
         <h:form>
-            <h:dataTable value="#{customerBean.customers}" var="cust" border="1">
-                <h:column>
-                    <f:facet name="header">ID</f:facet>
-                    #{cust.id}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    #{cust.firstName} #{cust.lastName}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Cars Owned</f:facet>
-                    <ui:repeat value="#{cust.cars}" var="car">
-                        #{car.model} (#{car.year})<br />
-                    </ui:repeat>
-                </h:column>
-            </h:dataTable>
-
-            <h:panelGrid columns="2" style="margin-top: 20px;">
+            <h3>Add New Customer</h3>
+            <h:panelGrid columns="2">
                 <h:outputLabel value="First Name:" for="firstName"/>
                 <h:inputText id="firstName" value="#{customerBean.newCustomer.firstName}" required="true"/>
 
@@ -33,5 +21,49 @@
                 <h:commandButton value="Add Customer" action="#{customerBean.saveCustomer}" />
             </h:panelGrid>
         </h:form>
+
+        <hr/>
+
+        <h3>Existing Customers</h3>
+        <h:dataTable value="#{customerBean.customers}" var="cust" border="1">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                #{cust.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{cust.firstName} #{cust.lastName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cars Owned</f:facet>
+                <ui:repeat value="#{cust.cars}" var="car">
+                    #{car.model} (#{car.year})<br />
+                </ui:repeat>
+            </h:column>
+        </h:dataTable>
+
+        <hr/>
+
+        <h3>Assign Car to Customer</h3>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Select Customer:" for="customerId"/>
+                <h:selectOneMenu id="customerId" value="#{customerBean.selectedCustomerId}">
+                    <f:selectItem itemLabel="-- Select Customer --" itemValue="#{null}" />
+                    <f:selectItems value="#{customerBean.customers}" var="cust"
+                                   itemValue="#{cust.id}" itemLabel="#{cust.firstName} #{cust.lastName}" />
+                </h:selectOneMenu>
+
+                <h:outputLabel value="Select Car:" for="carId"/>
+                <h:selectOneMenu id="carId" value="#{customerBean.selectedCarId}">
+                    <f:selectItem itemLabel="-- Select Car --" itemValue="#{null}" />
+                    <f:selectItems value="#{customerBean.availableCars}" var="car"
+                                   itemValue="#{car.id}" itemLabel="#{car.model} (#{car.year})" />
+                </h:selectOneMenu>
+
+                <h:commandButton value="Assign Car to Customer" action="#{customerBean.assignCarToCustomer}" />
+            </h:panelGrid>
+        </h:form>
     </ui:define>
 </ui:composition>
+</html>

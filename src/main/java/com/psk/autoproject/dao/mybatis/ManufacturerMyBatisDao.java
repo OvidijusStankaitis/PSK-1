@@ -5,6 +5,7 @@ import com.psk.autoproject.mybatis.ManufacturerMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @ApplicationScoped
@@ -23,6 +24,8 @@ public class ManufacturerMyBatisDao {
 
     @Transactional
     public void save(Manufacturer manufacturer) {
+        // Insert vs update logic could go here if needed.
+        // For now, we call insert(...) always.
         manufacturerMapper.insert(manufacturer);
     }
 }

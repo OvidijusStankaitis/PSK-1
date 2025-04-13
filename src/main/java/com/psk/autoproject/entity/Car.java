@@ -25,7 +25,6 @@ public class Car implements Serializable {
     @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 
-    // Changed to LAZY
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "car_features",
@@ -34,7 +33,6 @@ public class Car implements Serializable {
     )
     private Set<Feature> features = new HashSet<>();
 
-    // Changed to LAZY
     @ManyToMany(mappedBy = "cars", fetch = FetchType.LAZY)
     private Set<Customer> owners = new HashSet<>();
 

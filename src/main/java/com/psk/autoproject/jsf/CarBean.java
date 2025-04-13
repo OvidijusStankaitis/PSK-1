@@ -1,7 +1,9 @@
 package com.psk.autoproject.jsf;
 
 import com.psk.autoproject.entity.Car;
+import com.psk.autoproject.entity.Manufacturer;
 import com.psk.autoproject.service.CarService;
+import com.psk.autoproject.service.ManufacturerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -19,26 +21,41 @@ public class CarBean implements Serializable {
     @Inject
     private CarService carService;
 
+    @Inject
+    private ManufacturerService manufacturerService;
+
     private List<Car> cars;
+    private List<Manufacturer> manufacturers;
     private Car newCar = new Car();
     private Car selectedCar;
 
+    private Long selectedManufacturerId;
+
     @PostConstruct
     public void init() {
-        // Instead of just carService.findAll(), load with features:
-        cars = carService.findAllWithFeatures();
+        cars = carService.findAll();
+        manufacturers = manufacturerService.findAll();
     }
 
-    public void saveCar() {
+    public String saveCar() {
+        if (selectedManufacturerId != null) {
+            Manufacturer manufacturer = manufacturerService.findById(selectedManufacturerId);
+            newCar.setManufacturer(manufacturer);
+        }
         carService.save(newCar);
-        newCar = new Car();
-        // Re-load to ensure lazy data is fetched again:
-        cars = carService.findAllWithFeatures();
+        newCar = new Car(); // reset the form
+        selectedManufacturerId = null; // reset the selected manufacturer
+        cars = carService.findAll();
+        return null; // stay on the same page
     }
 
-    // Getters/Setters
+    // Getters & Setters
     public List<Car> getCars() {
         return cars;
+    }
+
+    public List<Manufacturer> getManufacturers() {
+        return manufacturers;
     }
 
     public Car getNewCar() {
@@ -55,5 +72,13 @@ public class CarBean implements Serializable {
 
     public void setSelectedCar(Car selectedCar) {
         this.selectedCar = selectedCar;
+    }
+
+    public Long getSelectedManufacturerId() {
+        return selectedManufacturerId;
+    }
+
+    public void setSelectedManufacturerId(Long selectedManufacturerId) {
+        this.selectedManufacturerId = selectedManufacturerId;
     }
 }

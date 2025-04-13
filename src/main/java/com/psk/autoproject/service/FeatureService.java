@@ -15,11 +15,27 @@ public class FeatureService {
     private EntityManager em;
 
     public List<Feature> findAll() {
-        return em.createQuery("SELECT f FROM Feature f", Feature.class).getResultList();
+        return em.createQuery("SELECT f FROM Feature f", Feature.class)
+                .getResultList();
+    }
+
+    public List<Feature> findAllWithCars() {
+        return em.createQuery(
+                "SELECT DISTINCT f FROM Feature f LEFT JOIN FETCH f.cars",
+                Feature.class
+        ).getResultList();
     }
 
     public Feature findById(Long id) {
         return em.find(Feature.class, id);
+    }
+
+    public Feature findByIdWithCars(Long id) {
+        return em.createQuery(
+                        "SELECT f FROM Feature f LEFT JOIN FETCH f.cars WHERE f.id = :id",
+                        Feature.class
+                ).setParameter("id", id)
+                .getSingleResult();
     }
 
     @Transactional

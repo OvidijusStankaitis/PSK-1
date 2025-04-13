@@ -1,28 +1,64 @@
-<ui:composition template="template.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="template.xhtml">
     <ui:define name="content">
         <h2>Features</h2>
         <h:form>
-            <h:dataTable value="#{featureBean.features}" var="f" border="1">
-                <h:column>
-                    <f:facet name="header">ID</f:facet>
-                    #{f.id}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    #{f.name}
-                </h:column>
-            </h:dataTable>
-
-            <h:panelGrid columns="2" style="margin-top: 20px;">
-                <h:outputLabel value="New Feature Name:" for="newFeatureName"/>
+            <h3>Create a New Feature</h3>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Feature Name:" for="newFeatureName"/>
                 <h:inputText id="newFeatureName" value="#{featureBean.newFeature.name}" required="true"/>
 
                 <h:commandButton value="Add Feature" action="#{featureBean.saveFeature}" />
             </h:panelGrid>
         </h:form>
+
+        <hr/>
+
+        <h3>Existing Features</h3>
+        <h:dataTable value="#{featureBean.features}" var="feature" border="1">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                #{feature.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{feature.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cars with this feature</f:facet>
+                <ui:repeat value="#{feature.cars}" var="car">
+                    #{car.model} (#{car.year})<br />
+                </ui:repeat>
+            </h:column>
+        </h:dataTable>
+
+        <hr/>
+
+        <h3>Add Feature to Car</h3>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Select Feature:" for="featureId"/>
+                <h:selectOneMenu id="featureId" value="#{featureBean.selectedFeatureId}">
+                    <f:selectItem itemLabel="-- Select Feature --" itemValue="#{null}" />
+                    <f:selectItems value="#{featureBean.features}" var="feature"
+                                   itemValue="#{feature.id}" itemLabel="#{feature.name}" />
+                </h:selectOneMenu>
+
+                <h:outputLabel value="Select Car:" for="carId"/>
+                <h:selectOneMenu id="carId" value="#{featureBean.selectedCarId}">
+                    <f:selectItem itemLabel="-- Select Car --" itemValue="#{null}" />
+                    <f:selectItems value="#{featureBean.availableCars}" var="car"
+                                   itemValue="#{car.id}" itemLabel="#{car.model} (#{car.year})" />
+                </h:selectOneMenu>
+
+                <h:commandButton value="Add Feature to Car" action="#{featureBean.addFeatureToCar}" />
+            </h:panelGrid>
+        </h:form>
     </ui:define>
 </ui:composition>
+</html>

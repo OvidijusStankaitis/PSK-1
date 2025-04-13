@@ -17,16 +17,24 @@ public class CarService {
         return em.createQuery("SELECT c FROM Car c", Car.class).getResultList();
     }
 
-    // NEW method to also fetch features
     public List<Car> findAllWithFeatures() {
         return em.createQuery(
-                "SELECT c FROM Car c LEFT JOIN FETCH c.features",
+                "SELECT DISTINCT c FROM Car c LEFT JOIN FETCH c.features",
                 Car.class
         ).getResultList();
     }
 
     public Car findById(Long id) {
         return em.find(Car.class, id);
+    }
+
+    // Loads a Car with its features eagerly.
+    public Car findByIdWithFeatures(Long id) {
+        return em.createQuery(
+                        "SELECT c FROM Car c LEFT JOIN FETCH c.features WHERE c.id = :id",
+                        Car.class
+                ).setParameter("id", id)
+                .getSingleResult();
     }
 
     @Transactional
