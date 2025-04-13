@@ -1,0 +1,37 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:define name="content">
+        <h2>Customers</h2>
+        <h:form>
+            <h:dataTable value="#{customerBean.customers}" var="cust" border="1">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{cust.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    #{cust.firstName} #{cust.lastName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Cars Owned</f:facet>
+                    <ui:repeat value="#{cust.cars}" var="car">
+                        #{car.model} (#{car.year})<br />
+                    </ui:repeat>
+                </h:column>
+            </h:dataTable>
+
+            <h:panelGrid columns="2" style="margin-top: 20px;">
+                <h:outputLabel value="First Name:" for="firstName"/>
+                <h:inputText id="firstName" value="#{customerBean.newCustomer.firstName}" required="true"/>
+
+                <h:outputLabel value="Last Name:" for="lastName"/>
+                <h:inputText id="lastName" value="#{customerBean.newCustomer.lastName}" required="true"/>
+
+                <h:commandButton value="Add Customer" action="#{customerBean.saveCustomer}" />
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
