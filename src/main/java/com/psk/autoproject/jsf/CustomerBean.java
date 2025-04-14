@@ -8,8 +8,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
 
 @Named
@@ -26,13 +26,11 @@ public class CustomerBean implements Serializable {
 
     private List<Customer> customers;
     private Customer newCustomer = new Customer();
-    private Customer selectedCustomer;
     private Long selectedCustomerId;
     private Long selectedCarId;
 
     @PostConstruct
     public void init() {
-        // Use the eager method if you need to show the cars on the page.
         customers = customerService.findAllWithCars();
     }
 
@@ -47,33 +45,20 @@ public class CustomerBean implements Serializable {
         if (selectedCustomerId == null || selectedCarId == null) {
             return null;
         }
-
         try {
-            // Load the customer with its cars eagerly.
-            Customer customer = customerService.findByIdWithCars(selectedCustomerId);
-            // Load the car (if needed, you could also add a similar eager method for Car if you plan to display its relationships)
-            Car car = carService.findById(selectedCarId);
+            Customer customer = customerService.findById(selectedCustomerId);
+            Car car = carService.findByIdWithOwners(selectedCarId);
 
-            if (customer != null && car != null) {
-                if (customer.getCars() == null) {
-                    customer.setCars(new HashSet<>());
-                }
-                customer.getCars().add(car);
-
-                // Save the owning side (Customer) so the join table is updated.
-                customerService.save(customer);
-
-                // Refresh the customer list with their cars eagerly.
+            if (car != null && customer != null) {
+                car.getOwners().add(customer);
+                carService.save(car);
                 customers = customerService.findAllWithCars();
-
-                // Reset selections.
                 selectedCustomerId = null;
                 selectedCarId = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -81,7 +66,6 @@ public class CustomerBean implements Serializable {
         return carService.findAll();
     }
 
-    // Getters & Setters
     public List<Customer> getCustomers() {
         return customers;
     }
@@ -92,14 +76,6 @@ public class CustomerBean implements Serializable {
 
     public void setNewCustomer(Customer newCustomer) {
         this.newCustomer = newCustomer;
-    }
-
-    public Customer getSelectedCustomer() {
-        return selectedCustomer;
-    }
-
-    public void setSelectedCustomer(Customer selectedCustomer) {
-        this.selectedCustomer = selectedCustomer;
     }
 
     public Long getSelectedCustomerId() {

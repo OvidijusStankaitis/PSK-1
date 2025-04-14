@@ -8,6 +8,8 @@ import java.util.List;
 @Mapper
 public interface FeatureMapper {
     List<Feature> findAll();
+
     Feature findById(Long id);
+
     void insert(Feature feature);
 }

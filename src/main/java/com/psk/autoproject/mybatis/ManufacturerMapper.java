@@ -8,6 +8,8 @@ import java.util.List;
 @Mapper
 public interface ManufacturerMapper {
     List<Manufacturer> findAll();
+
     Manufacturer findById(Long id);
+
     void insert(Manufacturer manufacturer);
 }

@@ -8,6 +8,8 @@ import java.util.List;
 @Mapper
 public interface CarMapper {
     List<Car> findAll();
+
     Car findById(Long id);
+
     void insert(Car car);
 }

@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+
 <h:head>
-    <title><ui:insert name="title">Auto Project</ui:insert></title>
-    <h:outputStylesheet library="css" name="style.css"/>
+    <title>
+        <ui:insert name="title">Auto Management</ui:insert>
+    </title>
 </h:head>
+
 <h:body>
-    <div id="header">
-        <h1>Auto Management System</h1>
+    <h1>Auto Management System</h1>
+    <div>
         <h:form>
-            <h:commandButton value="Home" action="index?faces-redirect=true"/>
             <h:commandButton value="Manufacturers" action="manufacturer?faces-redirect=true"/>
             <h:commandButton value="Cars" action="car?faces-redirect=true"/>
             <h:commandButton value="Customers" action="customer?faces-redirect=true"/>
@@ -19,9 +20,9 @@
         </h:form>
     </div>
 
-    <div id="content">
-        <ui:insert name="content">Default Content</ui:insert>
+    <hr/>
+    <div>
+        <ui:insert name="content"/>
     </div>
-
 </h:body>
 </html>

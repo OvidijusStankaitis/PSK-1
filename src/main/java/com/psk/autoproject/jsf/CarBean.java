@@ -43,13 +43,12 @@ public class CarBean implements Serializable {
             newCar.setManufacturer(manufacturer);
         }
         carService.save(newCar);
-        newCar = new Car(); // reset the form
-        selectedManufacturerId = null; // reset the selected manufacturer
+        newCar = new Car();
+        selectedManufacturerId = null;
         cars = carService.findAll();
-        return null; // stay on the same page
+        return null;
     }
 
-    // Getters & Setters
     public List<Car> getCars() {
         return cars;
     }

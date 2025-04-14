@@ -1,6 +1,7 @@
 package com.psk.autoproject.entity;
 
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +22,8 @@ public class Car implements Serializable {
     @Column(nullable = false)
     private int year;
 
-    @ManyToOne
-    @JoinColumn(name = "manufacturer_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "manufacturer_id", nullable = false)
     private Manufacturer manufacturer;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -33,12 +34,18 @@ public class Car implements Serializable {
     )
     private Set<Feature> features = new HashSet<>();
 
-    @ManyToMany(mappedBy = "cars", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "customer_cars",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id")
+    )
     private Set<Customer> owners = new HashSet<>();
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -46,6 +53,7 @@ public class Car implements Serializable {
     public String getModel() {
         return model;
     }
+
     public void setModel(String model) {
         this.model = model;
     }
@@ -53,6 +61,7 @@ public class Car implements Serializable {
     public int getYear() {
         return year;
     }
+
     public void setYear(int year) {
         this.year = year;
     }
@@ -60,6 +69,7 @@ public class Car implements Serializable {
     public Manufacturer getManufacturer() {
         return manufacturer;
     }
+
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
     }
@@ -67,6 +77,7 @@ public class Car implements Serializable {
     public Set<Feature> getFeatures() {
         return features;
     }
+
     public void setFeatures(Set<Feature> features) {
         this.features = features;
     }
@@ -74,6 +85,7 @@ public class Car implements Serializable {
     public Set<Customer> getOwners() {
         return owners;
     }
+
     public void setOwners(Set<Customer> owners) {
         this.owners = owners;
     }

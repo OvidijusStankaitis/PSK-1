@@ -34,6 +34,11 @@ public class ManufacturerBean implements Serializable {
         manufacturers = manufacturerService.findAll();
     }
 
+    public void deleteManufacturer(Manufacturer manufacturer) {
+        manufacturerService.delete(manufacturer);
+        manufacturers = manufacturerService.findAll();
+    }
+
     public List<Manufacturer> getManufacturers() {
         return manufacturers;
     }

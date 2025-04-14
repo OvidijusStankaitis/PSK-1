@@ -1,6 +1,7 @@
 package com.psk.autoproject.entity;
 
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,18 +22,13 @@ public class Customer implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    // Changed to LAZY
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "customer_cars",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "car_id")
-    )
+    @ManyToMany(mappedBy = "owners", fetch = FetchType.LAZY)
     private Set<Car> cars = new HashSet<>();
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -40,6 +36,7 @@ public class Customer implements Serializable {
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -47,6 +44,7 @@ public class Customer implements Serializable {
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -54,6 +52,7 @@ public class Customer implements Serializable {
     public Set<Car> getCars() {
         return cars;
     }
+
     public void setCars(Set<Car> cars) {
         this.cars = cars;
     }

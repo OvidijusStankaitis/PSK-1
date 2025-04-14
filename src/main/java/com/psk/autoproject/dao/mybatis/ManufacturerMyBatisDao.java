@@ -24,8 +24,6 @@ public class ManufacturerMyBatisDao {
 
     @Transactional
     public void save(Manufacturer manufacturer) {
-        // Insert vs update logic could go here if needed.
-        // For now, we call insert(...) always.
         manufacturerMapper.insert(manufacturer);
     }
 }

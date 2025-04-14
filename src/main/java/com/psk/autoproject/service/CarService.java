@@ -5,6 +5,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @RequestScoped
@@ -28,12 +29,21 @@ public class CarService {
         return em.find(Car.class, id);
     }
 
-    // Loads a Car with its features eagerly.
+    public Car findByIdWithOwners(Long id) {
+        return em.createQuery(
+                        "SELECT c FROM Car c LEFT JOIN FETCH c.owners WHERE c.id = :id",
+                        Car.class
+                )
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
     public Car findByIdWithFeatures(Long id) {
         return em.createQuery(
                         "SELECT c FROM Car c LEFT JOIN FETCH c.features WHERE c.id = :id",
                         Car.class
-                ).setParameter("id", id)
+                )
+                .setParameter("id", id)
                 .getSingleResult();
     }
 

@@ -5,6 +5,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @RequestScoped
@@ -18,7 +19,6 @@ public class CustomerService {
                 .getResultList();
     }
 
-    // New method: load all customers together with their cars eagerly.
     public List<Customer> findAllWithCars() {
         return em.createQuery(
                 "SELECT DISTINCT c FROM Customer c LEFT JOIN FETCH c.cars",
@@ -30,7 +30,6 @@ public class CustomerService {
         return em.find(Customer.class, id);
     }
 
-    // New method: load a Customer together with its cars eagerly.
     public Customer findByIdWithCars(Long id) {
         return em.createQuery(
                         "SELECT c FROM Customer c LEFT JOIN FETCH c.cars WHERE c.id = :id",
