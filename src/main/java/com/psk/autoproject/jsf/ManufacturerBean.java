@@ -25,18 +25,19 @@ public class ManufacturerBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        manufacturers = manufacturerService.findAll();
+        // Instead of "findAll()", we now call "findAllWithCars()".
+        manufacturers = manufacturerService.findAllWithCars();
     }
 
     public void saveManufacturer() {
         manufacturerService.save(newManufacturer);
         newManufacturer = new Manufacturer();
-        manufacturers = manufacturerService.findAll();
+        manufacturers = manufacturerService.findAllWithCars(); // reload
     }
 
     public void deleteManufacturer(Manufacturer manufacturer) {
         manufacturerService.delete(manufacturer);
-        manufacturers = manufacturerService.findAll();
+        manufacturers = manufacturerService.findAllWithCars(); // reload
     }
 
     public List<Manufacturer> getManufacturers() {

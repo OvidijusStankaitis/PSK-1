@@ -21,6 +21,13 @@ public class ManufacturerService {
         return em.createQuery("SELECT m FROM Manufacturer m", Manufacturer.class).getResultList();
     }
 
+    public List<Manufacturer> findAllWithCars() {
+        return em.createQuery(
+                "SELECT DISTINCT m FROM Manufacturer m LEFT JOIN FETCH m.cars",
+                Manufacturer.class
+        ).getResultList();
+    }
+
     public Manufacturer findById(Long id) {
         return em.find(Manufacturer.class, id);
     }
