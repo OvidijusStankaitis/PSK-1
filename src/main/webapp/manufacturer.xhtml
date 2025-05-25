@@ -43,6 +43,36 @@
                 </h:column>
             </h:dataTable>
         </h:form>
+
+        <hr/>
+
+        <h3>Total Cars Calculation</h3>
+        <h:form>
+            <h:commandButton value="Calculate Total Cars"
+                             action="#{manufacturerBean.startTotalCarsCalculation}"
+                             disabled="#{manufacturerBean.calculatingTotalCars}"/>
+
+            <h:commandButton value="Check Result"
+                             action="#{manufacturerBean.checkAsyncResults}"/>
+
+            <br/>
+            <h:outputText value="Status: Calculating..."
+                          rendered="#{manufacturerBean.calculatingTotalCars}"/>
+
+            <h:outputText value="Total cars in system: #{manufacturerBean.totalCars}"
+                          rendered="#{manufacturerBean.totalCars != null and manufacturerBean.totalCars >= 0}">
+
+            <h:outputText value="Error calculating total cars"
+                          rendered="#{manufacturerBean.totalCars != null and manufacturerBean.totalCars lt 0}">
+        </h:form>
+
+        <hr/>
+
+        <h4>Instructions:</h4>
+        <ul>
+            <li>Click "Calculate Total Cars" to start an async task</li>
+            <li>Click "Check Result" to fetch the result</li>
+        </ul>
     </ui:define>
 </ui:composition>
 </html>
