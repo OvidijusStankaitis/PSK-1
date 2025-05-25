@@ -22,6 +22,9 @@ public class Car implements Serializable {
     @Column(nullable = false)
     private int year;
 
+    @Version
+    private Long version;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "manufacturer_id", nullable = false)
     private Manufacturer manufacturer;
@@ -64,6 +67,14 @@ public class Car implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public Manufacturer getManufacturer() {
