@@ -1,24 +1,28 @@
 package com.psk.autoproject.service;
 
 import com.psk.autoproject.entity.Customer;
-import jakarta.enterprise.context.RequestScoped;
+import com.psk.autoproject.dao.mybatis.CustomerMapper;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-
 import java.util.List;
 
-@RequestScoped
+@ApplicationScoped
 public class CustomerService {
+
+    @Inject
+    private CustomerMapper customerMapper;
 
     @PersistenceContext
     private EntityManager em;
 
     public List<Customer> findAll() {
-        return em.createQuery("SELECT c FROM Customer c", Customer.class)
-                .getResultList();
+        return customerMapper.findAll();
     }
 
+    // Restores the old behavior for fetching customers with their cars
     public List<Customer> findAllWithCars() {
         return em.createQuery(
                 "SELECT DISTINCT c FROM Customer c LEFT JOIN FETCH c.cars",
@@ -27,23 +31,15 @@ public class CustomerService {
     }
 
     public Customer findById(Long id) {
-        return em.find(Customer.class, id);
-    }
-
-    public Customer findByIdWithCars(Long id) {
-        return em.createQuery(
-                        "SELECT c FROM Customer c LEFT JOIN FETCH c.cars WHERE c.id = :id",
-                        Customer.class
-                ).setParameter("id", id)
-                .getSingleResult();
+        return customerMapper.findById(id);
     }
 
     @Transactional
     public void save(Customer customer) {
         if (customer.getId() == null) {
-            em.persist(customer);
+            customerMapper.insert(customer);
         } else {
-            em.merge(customer);
+            customerMapper.update(customer);
         }
     }
 }
