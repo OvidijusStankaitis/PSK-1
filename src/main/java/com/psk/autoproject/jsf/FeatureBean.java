@@ -31,6 +31,10 @@ public class FeatureBean implements Serializable {
     private Long selectedFeatureId;
     private Long selectedCarId;
 
+    // Fields for update functionality
+    private Long editFeatureId;
+    private String editFeatureName;
+
     @PostConstruct
     public void init() {
         features = featureService.findAllWithCars();
@@ -73,6 +77,20 @@ public class FeatureBean implements Serializable {
         return null;
     }
 
+    public String updateFeature() {
+        if (editFeatureId != null && editFeatureName != null) {
+            Feature feature = featureService.findById(editFeatureId);
+            if (feature != null) {
+                feature.setName(editFeatureName);
+                featureService.save(feature);
+                features = featureService.findAllWithCars();
+                editFeatureId = null;
+                editFeatureName = null;
+            }
+        }
+        return null;
+    }
+
     public List<Car> getAvailableCars() {
         return carService.findAll();
     }
@@ -111,5 +129,21 @@ public class FeatureBean implements Serializable {
 
     public void setSelectedCarId(Long selectedCarId) {
         this.selectedCarId = selectedCarId;
+    }
+
+    public Long getEditFeatureId() {
+        return editFeatureId;
+    }
+
+    public void setEditFeatureId(Long editFeatureId) {
+        this.editFeatureId = editFeatureId;
+    }
+
+    public String getEditFeatureName() {
+        return editFeatureName;
+    }
+
+    public void setEditFeatureName(String editFeatureName) {
+        this.editFeatureName = editFeatureName;
     }
 }

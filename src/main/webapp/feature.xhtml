@@ -42,6 +42,21 @@
 
         <hr/>
 
+        <h3>Update Feature</h3>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Feature ID:" for="editFeatureId"/>
+                <h:inputText id="editFeatureId" value="#{featureBean.editFeatureId}" required="true"/>
+
+                <h:outputLabel value="New Feature Name:" for="editFeatureName"/>
+                <h:inputText id="editFeatureName" value="#{featureBean.editFeatureName}" required="true"/>
+
+                <h:commandButton value="Update Feature" action="#{featureBean.updateFeature}"/>
+            </h:panelGrid>
+        </h:form>
+
+        <hr/>
+
         <h3>Add Feature to Car</h3>
         <h:form>
             <h:panelGrid columns="2">
